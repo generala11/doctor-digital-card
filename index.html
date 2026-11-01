@@ -1,1 +1,222 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102a43">
+  <title>Magdy Ahmed | Digital Business Card</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 25px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #102a43, #243b53);
+      color: #243b53;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 22px;
+      padding: 30px 22px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    }
+
+    .language {
+      text-align: left;
+      margin-bottom: 15px;
+    }
+
+    .language button {
+      border: 1px solid #d5e0e8;
+      background: #f3f7fa;
+      color: #102a43;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .avatar {
+      width: 95px;
+      height: 95px;
+      margin: 5px auto 18px;
+      border-radius: 50%;
+      background: #102a43;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+      border: 5px solid #e5edf3;
+    }
+
+    h1 {
+      margin: 8px 0;
+      font-size: 27px;
+      color: #102a43;
+    }
+
+    .job {
+      color: #b18a45;
+      font-weight: bold;
+      font-size: 17px;
+      margin: 8px 0;
+    }
+
+    .pharmacy {
+      font-size: 17px;
+      margin: 12px 0 22px;
+      color: #526777;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5edf3;
+      margin: 20px 0;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .action {
+      display: block;
+      text-decoration: none;
+      padding: 14px 8px;
+      border-radius: 12px;
+      background: #102a43;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .action.whatsapp {
+      background: #168b55;
+    }
+
+    .action.email {
+      background: #526777;
+    }
+
+    .footer {
+      color: #8495a3;
+      font-size: 12px;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+
+    <div class="language">
+      <button onclick="toggleLanguage()" id="langButton">
+        English
+      </button>
+    </div>
+
+    <div class="avatar">MA</div>
+
+    <h1 id="name">مجدي أحمد</h1>
+
+    <div class="job" id="job">صيدلي</div>
+
+    <div class="pharmacy" id="pharmacy">
+      صيدلية تداوينا
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="actions">
+
+      <a class="action" href="tel:+966544517989" id="call">
+        اتصال هاتفي
+      </a>
+
+      <a class="action whatsapp"
+         href="https://wa.me/966544517989"
+         target="_blank" id="whatsapp">
+        واتساب
+      </a>
+
+      <a class="action email"
+         href="mailto:phd.magdy@gmail.com"
+         id="email">
+        البريد الإلكتروني
+      </a>
+
+      <a class="action"
+         href="https://maps.app.goo.gl/PVUyQBiJd7FfxfZx6?g_st=ac"
+         target="_blank" id="location">
+        موقع الصيدلية
+      </a>
+
+    </div>
+
+    <div class="footer" id="footer">
+      بطاقة اتصال رقمية عبر NFC
+    </div>
+
+  </main>
+
+  <script>
+    let isArabic = true;
+
+    function toggleLanguage() {
+      isArabic = !isArabic;
+
+      document.documentElement.lang =
+        isArabic ? "ar" : "en";
+
+      document.documentElement.dir =
+        isArabic ? "rtl" : "ltr";
+
+      document.getElementById("name").textContent =
+        isArabic ? "مجدي أحمد" : "Magdy Ahmed";
+
+      document.getElementById("job").textContent =
+        isArabic ? "صيدلي" : "Pharmacist";
+
+      document.getElementById("pharmacy").textContent =
+        isArabic ? "صيدلية تداوينا" : "Tadawina Pharmacy";
+
+      document.getElementById("call").textContent =
+        isArabic ? "اتصال هاتفي" : "Call";
+
+      document.getElementById("whatsapp").textContent =
+        isArabic ? "واتساب" : "WhatsApp";
+
+      document.getElementById("email").textContent =
+        isArabic ? "البريد الإلكتروني" : "Email";
+
+      document.getElementById("location").textContent =
+        isArabic ? "موقع الصيدلية" : "Pharmacy Location";
+
+      document.getElementById("footer").textContent =
+        isArabic
+          ? "بطاقة اتصال رقمية عبر NFC"
+          : "Digital Business Card via NFC";
+
+      document.getElementById("langButton").textContent =
+        isArabic ? "English" : "العربية";
+    }
+  </script>
+
+</body>
+</html>
