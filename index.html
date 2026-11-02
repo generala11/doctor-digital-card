@@ -182,7 +182,53 @@ function showData(data) {
   document.getElementById("status").textContent =
     isArabic ? "البيانات محدثة" : "Information updated";
 }
+function escapeVCard(value) {
+  return String(value || "")
+    .replace(/\\/g, "\\\\")
+    .replace(/\n/g, "\\n")
+    .replace(/,/g, "\\,")
+    .replace(/;/g, "\\;");
+}
 
+window.downloadContact = function(event) {
+  event.preventDefault();
+
+  const d = cardData;
+
+  const name = isArabic ? d.nameAr : d.nameEn;
+  const job = isArabic ? d.jobAr : d.jobEn;
+  const pharmacy = isArabic ? d.pharmacyAr : d.pharmacyEn;
+
+  const vcard = [
+    "BEGIN:VCARD",
+    "VERSION:3.0",
+    "FN:" + escapeVCard(name),
+    "N:" + escapeVCard(name) + ";;;;",
+    "ORG:" + escapeVCard(pharmacy),
+    "TITLE:" + escapeVCard(job),
+    "TEL;TYPE=CELL:" + escapeVCard(d.phone),
+    "EMAIL;TYPE=INTERNET:" + escapeVCard(d.email),
+    "URL:" + escapeVCard(d.mapUrl),
+    "END:VCARD"
+  ].join("\r\n");
+
+  const blob = new Blob(
+    ["\uFEFF" + vcard],
+    { type: "text/vcard;charset=utf-8" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "Magdy-Ahmed.vcf";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+};
 function updateLanguage() {
   const d = cardData;
 
@@ -209,7 +255,10 @@ function updateLanguage() {
 
   document.getElementById("location").textContent =
     isArabic ? "موقع الصيدلية" : "Pharmacy Location";
-
+  
+document.getElementById("saveContact").textContent =
+    isArabic ? "حفظ جهة الاتصال" : "Save Contact";
+  
   document.getElementById("review").textContent =
     isArabic ? "تقييم Google" : "Google Review";
 
