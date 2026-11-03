@@ -184,50 +184,71 @@ function showData(data) {
 function escapeVCard(value) {
   return String(value || "")
     .replace(/\\/g, "\\\\")
-    .replace(/\n/g, "\\n")
+    .replace(/\r?\n/g, "\\n")
     .replace(/,/g, "\\,")
     .replace(/;/g, "\\;");
 }
 
-window.downloadContact = function(event) {
+document.getElementById("saveContact").addEventListener("click", function(event) {
   event.preventDefault();
 
-  const d = cardData;
+  try {
+    const d = cardData;
 
-  const name = isArabic ? d.nameAr : d.nameEn;
-  const job = isArabic ? d.jobAr : d.jobEn;
-  const pharmacy = isArabic ? d.pharmacyAr : d.pharmacyEn;
+    if (!d || (!d.nameAr && !d.nameEn)) {
+      alert("بيانات البطاقة لم يتم تحميلها بعد");
+      return;
+    }
 
-  const vcard = [
-    "BEGIN:VCARD",
-    "VERSION:3.0",
-    "FN:" + escapeVCard(name),
-    "N:" + escapeVCard(name) + ";;;;",
-    "ORG:" + escapeVCard(pharmacy),
-    "TITLE:" + escapeVCard(job),
-    "TEL;TYPE=CELL:" + escapeVCard(d.phone),
-    "EMAIL;TYPE=INTERNET:" + escapeVCard(d.email),
-    "URL:" + escapeVCard(d.mapUrl),
-    "END:VCARD"
-  ].join("\r\n");
+    const name = isArabic
+      ? (d.nameAr || d.nameEn)
+      : (d.nameEn || d.nameAr);
 
-  const blob = new Blob(
-    ["\uFEFF" + vcard],
-    { type: "text/vcard;charset=utf-8" }
-  );
+    const job = isArabic
+      ? (d.jobAr || d.jobEn)
+      : (d.jobEn || d.jobAr);
 
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
+    const pharmacy = isArabic
+      ? (d.pharmacyAr || d.pharmacyEn)
+      : (d.pharmacyEn || d.pharmacyAr);
 
-  link.href = url;
-  link.download = "Magdy-Ahmed.vcf";
+    const vcard = [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      "FN:" + escapeVCard(name),
+      "N:" + escapeVCard(name) + ";;;;",
+      "ORG:" + escapeVCard(pharmacy),
+      "TITLE:" + escapeVCard(job),
+      "TEL;TYPE=CELL:" + escapeVCard(d.phone),
+      "EMAIL;TYPE=INTERNET:" + escapeVCard(d.email),
+      "URL:" + escapeVCard(d.mapUrl),
+      "END:VCARD"
+    ].join("\r\n");
 
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+    const blob = new Blob(
+      [vcard],
+      { type: "text/vcard;charset=utf-8" }
+    );
 
-  setTimeout(() => URL.revokeObjectURL(url), 1500);
-};
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "Magdy-Ahmed.vcf";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(function() {
+      URL.revokeObjectURL(url);
+    }, 5000);
+
+  } catch (error) {
+    console.error("Contact download error:", error);
+    alert("حدث خطأ أثناء إنشاء بطاقة الاتصال");
+  }
+});
 function updateLanguage() {
   const d = cardData;
 
